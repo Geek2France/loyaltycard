@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"image"
 	"image/draw"
-	_ "image/jpeg"
-	"image/png"
+	"image/jpeg"
+	_ "image/png"
 	"io/ioutil"
 	"log"
 	"os"
@@ -129,14 +129,16 @@ func drawCard(logo, barCode, code, owner image.Image, codeLength, ownerLength in
 }
 
 func saveloyaltyCard(image image.Image, filename string) error {
-	outFile, err := os.Create(filename + ".png")
+	outFile, err := os.Create(filename + ".jpg")
 	if err != nil {
 		return err
 	}
 	defer outFile.Close()
 	b := bufio.NewWriter(outFile)
-	err = png.Encode(b, image)
 
-	fmt.Println("Wrote " + filename + ".png OK.")
+	opt := jpeg.Options{90}
+	err = jpeg.Encode(b, image, &opt)
+
+	fmt.Println("Wrote " + filename + ".jpg OK.")
 	return err
 }
