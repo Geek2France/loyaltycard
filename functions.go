@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 
 	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/ean"
@@ -33,10 +34,17 @@ var (
 
 func init() {
 	// Read the font data.
-	fontBytes, err := ioutil.ReadFile("FreeSans.ttf")
+	ex, err := os.Executable()
 	if err != nil {
 		log.Fatal(err)
 	}
+	dir := path.Dir(ex)
+
+	fontBytes, err := ioutil.ReadFile(dir + "/FreeSans.ttf")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	f, err := freetype.ParseFont(fontBytes)
 	if err != nil {
 		log.Fatal(err)

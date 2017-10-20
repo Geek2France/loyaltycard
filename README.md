@@ -12,17 +12,18 @@ One solution is to create your own digital loyalty cards with *loyaltycard* soft
 go get github.com/Geek2France/loyaltycard
 cd ${GOPATH}/src/github.com/Geek2France/loyaltycard
 go install
+cp FreeSans.ttf ${GOPATH}/bin
 ```
+The file FreeSans.ttf and the executable file loyaltycard should always be in the same directory.
 
 ## Usage
 You should set the following parameters :
 * `-cardNumber`: Ean13 loyalty card code. Example:  "1234567890128"
 * `-cardOwner` : Loyalty card owner. Example: "John DOE"
-* `-shopName`  : Shop that provided the loyalty card. This will be the name of loyalty card image. Example: "Décathlon" 
+* `-shopName`  : Shop that provided the loyalty card. This will be the name of loyalty card image. Example: "Décathlon"
 * `-shopLogo`  : Image representating the shop. Png and jpeg image formats are supported. Example: "/data/Logos/decathlonlogo.png"
 ```
-cd ${GOPATH}/bin
-./loyaltycard -cardNumber "1234567890128" -cardOwner "John DOE" -shopName "Décathlon" -shopLogo "/data/Logos/decathlonlogo.png"
+${GOPATH}/bin/loyaltycard -cardNumber "1234567890128" -cardOwner "John DOE" -shopName "Décathlon" -shopLogo "/data/Logos/decathlonlogo.png"
 ```
 <br />
 This will generate a loyalty card image named D&eacute;cathlon.jpg:
