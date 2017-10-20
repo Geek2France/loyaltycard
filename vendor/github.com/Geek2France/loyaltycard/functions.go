@@ -13,10 +13,8 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path"
 
 	"github.com/boombuler/barcode"
-	"github.com/boombuler/barcode/code128"
 	"github.com/boombuler/barcode/ean"
 	"github.com/nfnt/resize"
 
@@ -35,17 +33,10 @@ var (
 
 func init() {
 	// Read the font data.
-	ex, err := os.Executable()
+	fontBytes, err := ioutil.ReadFile("FreeSans.ttf")
 	if err != nil {
 		log.Fatal(err)
 	}
-	dir := path.Dir(ex)
-
-	fontBytes, err := ioutil.ReadFile(dir + "/FreeSans.ttf")
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	f, err := freetype.ParseFont(fontBytes)
 	if err != nil {
 		log.Fatal(err)
@@ -60,27 +51,13 @@ func init() {
 }
 
 func getBarCode(code string) (barcode.Barcode, error) {
-	var (
-		codeEncoded barcode.BarcodeIntCS
-		err         error
-	)
-
 	// Create the barcode
-	switch *codeType {
-	case "code128":
-		codeEncoded, err = code128.Encode(code)
-		if err != nil {
-			return nil, err
-		}
-	default:
-		codeEncoded, err = ean.Encode(code)
-		if err != nil {
-			return nil, err
-		}
+	codeEncoded, err := ean.Encode(code)
+	if err != nil {
+		return nil, err
 	}
 	// Scale the barcode to 200x100 pixels
 	return barcode.Scale(codeEncoded, 200, 100)
-
 }
 
 func getCodeImg(code string) (image.Image, int, error) {

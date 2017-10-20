@@ -9,6 +9,12 @@
 			"revisionTime": "2017-09-22T10:33:52Z"
 		},
 		{
+			"checksumSHA1": "0O6qqQvpcfv8NwsCRDSB0mzSc90=",
+			"path": "github.com/boombuler/barcode/code128",
+			"revision": "3cfea5ab600ae37946be2b763b8ec2c1cf2d272d",
+			"revisionTime": "2017-09-22T10:33:52Z"
+		},
+		{
 			"checksumSHA1": "3qmSYXsWlVqPEZd0CZD+1jNbCIg=",
 			"path": "github.com/boombuler/barcode/ean",
 			"revision": "3cfea5ab600ae37946be2b763b8ec2c1cf2d272d",

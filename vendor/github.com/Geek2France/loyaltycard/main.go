@@ -14,7 +14,6 @@ var (
 	cardOwner  = flag.String("cardOwner", "John Doe", "loyalty card owner")
 	shopName   = flag.String("shopName", "Auchan", "shop name")
 	shopLogo   = flag.String("shopLogo", "Auchan_logo.jpg", "shop jpeg logo")
-	codeType   = flag.String("codeType", "ean", "codebar type")
 )
 
 func main() {
