@@ -106,6 +106,19 @@ func getBarCode(code string) (barcode.Barcode, error) {
 }
 
 func getCodeImg(code string) (image.Image, int, error) {
+	// Format code
+	var str string
+	switch *codeType {
+	case "codabar":
+		str = code[:1] + " " + code[1:len(code)-1] + " " + code[len(code)-1:]
+	case "code128":
+		str = code
+	case "code39", "code39FullAscii":
+		str = code[:]
+	default:
+		str = code[:1] + " " + code[1:7] + " " + code[7:]
+	}
+
 	codeImg := image.NewRGBA(image.Rectangle{image.ZP, image.Pt(width, 100)})
 	draw.Draw(codeImg, codeImg.Bounds(), image.White, image.ZP, draw.Src)
 	c.SetFontSize(18)
@@ -114,7 +127,7 @@ func getCodeImg(code string) (image.Image, int, error) {
 
 	// Draw the text.
 	pt := freetype.Pt(0, int(c.PointToFixed(18)>>6))
-	lastPoint, err := c.DrawString((*cardNumber)[:1]+"   "+(*cardNumber)[1:7]+"   "+(*cardNumber)[7:], pt)
+	lastPoint, err := c.DrawString(str, pt)
 	if err != nil {
 		return nil, 0, err
 	}
