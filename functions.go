@@ -85,6 +85,11 @@ func getBarCode(code string) (barcode.Barcode, error) {
 		if err != nil {
 			return nil, err
 		}
+	case "code39FullAscii":
+		codeEncoded, err = code39.Encode(code, false, true)
+		if err != nil {
+			return nil, err
+		}
 	default:
 		codeEncoded, err = ean.Encode(code)
 		if err != nil {
