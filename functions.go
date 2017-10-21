@@ -69,13 +69,13 @@ func getBarCode(code string) (barcode.Barcode, error) {
 
 	// Create the barcode
 	switch *codeType {
-	case "code128":
-		codeEncoded, err = code128.Encode(code)
+	case "codabar":
+		codeEncoded, err = codabar.Encode(code)
 		if err != nil {
 			return nil, err
 		}
-	case "codabar":
-		codeEncoded, err = codabar.Encode(code)
+	case "code128":
+		codeEncoded, err = code128.Encode(code)
 		if err != nil {
 			return nil, err
 		}
