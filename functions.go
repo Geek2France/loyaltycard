@@ -106,7 +106,7 @@ func getBarCode(code string) (barcode.Barcode, error) {
 }
 
 func getCodeImg(code string) (image.Image, int, error) {
-	codeImg := image.NewRGBA(image.Rectangle{image.ZP, image.Pt(200, 100)})
+	codeImg := image.NewRGBA(image.Rectangle{image.ZP, image.Pt(width, 100)})
 	draw.Draw(codeImg, codeImg.Bounds(), image.White, image.ZP, draw.Src)
 	c.SetFontSize(18)
 	c.SetClip(codeImg.Bounds())
@@ -125,7 +125,7 @@ func getCodeImg(code string) (image.Image, int, error) {
 }
 
 func getOwnerImg(owner string) (image.Image, int, error) {
-	ownerImg := image.NewRGBA(image.Rectangle{image.ZP, image.Pt(200, 100)})
+	ownerImg := image.NewRGBA(image.Rectangle{image.ZP, image.Pt(width, 100)})
 	draw.Draw(ownerImg, ownerImg.Bounds(), image.White, image.ZP, draw.Src)
 	c.SetFontSize(14)
 	c.SetClip(ownerImg.Bounds())
