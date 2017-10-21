@@ -96,9 +96,13 @@ func getBarCode(code string) (barcode.Barcode, error) {
 			return nil, err
 		}
 	}
-	// Scale the barcode to 200x100 pixels
-	return barcode.Scale(codeEncoded, 200, 100)
 
+	// Scale the barcode to 200x100 pixels if possible
+	minWidth := codeEncoded.Bounds().Max.X - codeEncoded.Bounds().Min.X
+	if 200 > minWidth {
+		return barcode.Scale(codeEncoded, 200, 100)
+	}
+	return barcode.Scale(codeEncoded, minWidth, 100)
 }
 
 func getCodeImg(code string) (image.Image, int, error) {
