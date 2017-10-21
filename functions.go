@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"image"
 	"image/draw"
+	_ "image/gif"
 	"image/jpeg"
 	_ "image/png"
 	"io/ioutil"
@@ -16,6 +17,7 @@ import (
 	"path"
 
 	"github.com/boombuler/barcode"
+	"github.com/boombuler/barcode/codabar"
 	"github.com/boombuler/barcode/code128"
 	"github.com/boombuler/barcode/ean"
 	"github.com/nfnt/resize"
@@ -61,7 +63,7 @@ func init() {
 
 func getBarCode(code string) (barcode.Barcode, error) {
 	var (
-		codeEncoded barcode.BarcodeIntCS
+		codeEncoded barcode.Barcode
 		err         error
 	)
 
@@ -69,6 +71,11 @@ func getBarCode(code string) (barcode.Barcode, error) {
 	switch *codeType {
 	case "code128":
 		codeEncoded, err = code128.Encode(code)
+		if err != nil {
+			return nil, err
+		}
+	case "codabar":
+		codeEncoded, err = codabar.Encode(code)
 		if err != nil {
 			return nil, err
 		}
