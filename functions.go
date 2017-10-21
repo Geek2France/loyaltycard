@@ -19,6 +19,7 @@ import (
 	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/codabar"
 	"github.com/boombuler/barcode/code128"
+	"github.com/boombuler/barcode/code39"
 	"github.com/boombuler/barcode/ean"
 	"github.com/nfnt/resize"
 
@@ -76,6 +77,11 @@ func getBarCode(code string) (barcode.Barcode, error) {
 		}
 	case "code128":
 		codeEncoded, err = code128.Encode(code)
+		if err != nil {
+			return nil, err
+		}
+	case "code39":
+		codeEncoded, err = code39.Encode(code, false, false)
 		if err != nil {
 			return nil, err
 		}

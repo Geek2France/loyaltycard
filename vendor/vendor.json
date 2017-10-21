@@ -21,6 +21,12 @@
 			"revisionTime": "2017-09-22T10:33:52Z"
 		},
 		{
+			"checksumSHA1": "dpglLodreQ/t6GC13xoypcDnNZI=",
+			"path": "github.com/boombuler/barcode/code39",
+			"revision": "3cfea5ab600ae37946be2b763b8ec2c1cf2d272d",
+			"revisionTime": "2017-09-22T10:33:52Z"
+		},
+		{
 			"checksumSHA1": "3qmSYXsWlVqPEZd0CZD+1jNbCIg=",
 			"path": "github.com/boombuler/barcode/ean",
 			"revision": "3cfea5ab600ae37946be2b763b8ec2c1cf2d272d",
