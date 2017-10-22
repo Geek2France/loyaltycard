@@ -227,8 +227,9 @@ func drawCard(logo, barCode, code, codeType, owner image.Image, codeLength, code
 	return card
 }
 
-func saveloyaltyCard(image image.Image, filename string) error {
-	outFile, err := os.Create(filename + ".jpg")
+func saveloyaltyCard(image image.Image) error {
+	filename := *shopName + "_" + *cardOwner + ".jpg"
+	outFile, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
@@ -238,6 +239,6 @@ func saveloyaltyCard(image image.Image, filename string) error {
 	opt := jpeg.Options{90}
 	err = jpeg.Encode(b, image, &opt)
 
-	fmt.Println("Wrote " + filename + ".jpg OK.")
+	fmt.Println("Wrote " + filename + ".")
 	return err
 }

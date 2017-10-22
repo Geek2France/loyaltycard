@@ -55,7 +55,7 @@ func main() {
 	loyaltyCard := drawCard(logoImgResized, barCodeImg, codeImg, codeTypeImg, ownerImg, codeImgLength, codeTypeImgLength, ownerImgLength)
 
 	// Save that loyalty card image to disk.
-	if err = saveloyaltyCard(loyaltyCard, *shopName); err != nil {
+	if err = saveloyaltyCard(loyaltyCard); err != nil {
 		log.Fatal(err)
 	}
 }
