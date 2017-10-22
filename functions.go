@@ -24,6 +24,7 @@ import (
 	"github.com/boombuler/barcode/code128"
 	"github.com/boombuler/barcode/code39"
 	"github.com/boombuler/barcode/ean"
+	"github.com/boombuler/barcode/twooffive"
 	"github.com/nfnt/resize"
 
 	"github.com/golang/freetype"
@@ -93,6 +94,11 @@ func getBarCode() (barcode.Barcode, error) {
 		if err != nil {
 			return nil, err
 		}
+	case "itf":
+		codeEncoded, err = twooffive.Encode(*cardNumber, true)
+		if err != nil {
+			return nil, err
+		}
 	default:
 		codeEncoded, err = ean.Encode(*cardNumber)
 		if err != nil {
@@ -116,7 +122,7 @@ func getCodeImg() (image.Image, int, error) {
 		str = (*cardNumber)[:1] + " " + (*cardNumber)[1:len(*cardNumber)-1] + " " + (*cardNumber)[len(*cardNumber)-1:]
 	case "code128":
 		str = *cardNumber
-	case "code39", "code39FullAscii":
+	case "code39", "code39FullAscii", "itf":
 		str = (*cardNumber)[:]
 	default:
 		str = (*cardNumber)[:1] + " " + (*cardNumber)[1:7] + " " + (*cardNumber)[7:]
