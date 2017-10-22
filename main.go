@@ -22,25 +22,25 @@ func main() {
 	flag.Parse()
 
 	// Generate barcode image
-	barCodeImg, err := getBarCode(*cardNumber)
+	barCodeImg, err := getBarCode()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Transform card number into image
-	codeImg, codeImgLength, err := getCodeImg(*cardNumber)
+	codeImg, codeImgLength, err := getCodeImg()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Transform owner string into image
-	ownerImg, ownerImgLength, err := getOwnerImg(*cardOwner)
+	ownerImg, ownerImgLength, err := getOwnerImg()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Resize shop logo
-	logoImgResized, err := getResizedLogo(*shopLogo)
+	logoImgResized, err := getResizedLogo()
 	if err != nil {
 		log.Fatal(err)
 	}

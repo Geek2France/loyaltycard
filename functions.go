@@ -62,7 +62,7 @@ func init() {
 	c.SetHinting(font.HintingNone)
 }
 
-func getBarCode(code string) (barcode.Barcode, error) {
+func getBarCode() (barcode.Barcode, error) {
 	var (
 		codeEncoded barcode.Barcode
 		err         error
@@ -71,27 +71,27 @@ func getBarCode(code string) (barcode.Barcode, error) {
 	// Create the barcode
 	switch *codeType {
 	case "codabar":
-		codeEncoded, err = codabar.Encode(code)
+		codeEncoded, err = codabar.Encode(*cardNumber)
 		if err != nil {
 			return nil, err
 		}
 	case "code128":
-		codeEncoded, err = code128.Encode(code)
+		codeEncoded, err = code128.Encode(*cardNumber)
 		if err != nil {
 			return nil, err
 		}
 	case "code39":
-		codeEncoded, err = code39.Encode(code, false, false)
+		codeEncoded, err = code39.Encode(*cardNumber, false, false)
 		if err != nil {
 			return nil, err
 		}
 	case "code39FullAscii":
-		codeEncoded, err = code39.Encode(code, false, true)
+		codeEncoded, err = code39.Encode(*cardNumber, false, true)
 		if err != nil {
 			return nil, err
 		}
 	default:
-		codeEncoded, err = ean.Encode(code)
+		codeEncoded, err = ean.Encode(*cardNumber)
 		if err != nil {
 			return nil, err
 		}
@@ -105,18 +105,18 @@ func getBarCode(code string) (barcode.Barcode, error) {
 	return barcode.Scale(codeEncoded, minWidth, 100)
 }
 
-func getCodeImg(code string) (image.Image, int, error) {
+func getCodeImg() (image.Image, int, error) {
 	// Format code
 	var str string
 	switch *codeType {
 	case "codabar":
-		str = code[:1] + " " + code[1:len(code)-1] + " " + code[len(code)-1:]
+		str = (*cardNumber)[:1] + " " + (*cardNumber)[1:len(*cardNumber)-1] + " " + (*cardNumber)[len(*cardNumber)-1:]
 	case "code128":
-		str = code
+		str = *cardNumber
 	case "code39", "code39FullAscii":
-		str = code[:]
+		str = (*cardNumber)[:]
 	default:
-		str = code[:1] + " " + code[1:7] + " " + code[7:]
+		str = (*cardNumber)[:1] + " " + (*cardNumber)[1:7] + " " + (*cardNumber)[7:]
 	}
 
 	codeImg := image.NewRGBA(image.Rectangle{image.ZP, image.Pt(width, 100)})
@@ -137,7 +137,7 @@ func getCodeImg(code string) (image.Image, int, error) {
 	return codeImg, textLength, nil
 }
 
-func getOwnerImg(owner string) (image.Image, int, error) {
+func getOwnerImg() (image.Image, int, error) {
 	ownerImg := image.NewRGBA(image.Rectangle{image.ZP, image.Pt(width, 100)})
 	draw.Draw(ownerImg, ownerImg.Bounds(), image.White, image.ZP, draw.Src)
 	c.SetFontSize(14)
@@ -147,7 +147,7 @@ func getOwnerImg(owner string) (image.Image, int, error) {
 
 	// Draw the text.
 	pt := freetype.Pt(0, int(c.PointToFixed(14)>>6))
-	lastPoint, err := c.DrawString(owner, pt)
+	lastPoint, err := c.DrawString(*cardOwner, pt)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -157,8 +157,8 @@ func getOwnerImg(owner string) (image.Image, int, error) {
 	return ownerImg, textLength, nil
 }
 
-func getResizedLogo(logo string) (image.Image, error) {
-	handler, err := os.Open(logo)
+func getResizedLogo() (image.Image, error) {
+	handler, err := os.Open(*shopLogo)
 	if err != nil {
 		return nil, err
 	}
