@@ -143,9 +143,9 @@ func getCodeImg() (image.Image, int, error) {
 func getCodeTypeImg() (image.Image, int, error) {
 	// if *codeType is ean, override *codeType
 	if *codeType == "ean" {
-		if len(*cardNumber) == 13 {
+		if len(*cardNumber) == 12 || len(*cardNumber) == 13 {
 			*codeType = "ean13"
-		} else if len(*cardNumber) == 8 {
+		} else if len(*cardNumber) == 7 || len(*cardNumber) == 8 {
 			*codeType = "ean8"
 		} else {
 
