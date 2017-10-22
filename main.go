@@ -34,6 +34,12 @@ func main() {
 	}
 
 	// Transform owner string into image
+	codeTypeImg, codeTypeImgLength, err := getCodeTypeImg()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Transform owner string into image
 	ownerImg, ownerImgLength, err := getOwnerImg()
 	if err != nil {
 		log.Fatal(err)
@@ -46,7 +52,7 @@ func main() {
 	}
 
 	// Draw loyalty card
-	loyaltyCard := drawCard(logoImgResized, barCodeImg, codeImg, ownerImg, codeImgLength, ownerImgLength)
+	loyaltyCard := drawCard(logoImgResized, barCodeImg, codeImg, codeTypeImg, ownerImg, codeImgLength, codeTypeImgLength, ownerImgLength)
 
 	// Save that loyalty card image to disk.
 	if err = saveloyaltyCard(loyaltyCard, *shopName); err != nil {

@@ -5,6 +5,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"image"
 	"image/draw"
@@ -15,6 +16,8 @@ import (
 	"log"
 	"os"
 	"path"
+	"strconv"
+	"strings"
 
 	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/codabar"
@@ -137,6 +140,38 @@ func getCodeImg() (image.Image, int, error) {
 	return codeImg, textLength, nil
 }
 
+func getCodeTypeImg() (image.Image, int, error) {
+	// if *codeType is ean, override *codeType
+	if *codeType == "ean" {
+		if len(*cardNumber) == 13 {
+			*codeType = "ean13"
+		} else if len(*cardNumber) == 8 {
+			*codeType = "ean8"
+		} else {
+
+			return nil, 0, errors.New("ean code length is " + string(strconv.Itoa(len(*cardNumber))) + ". It should be 8 or 13.")
+		}
+	}
+
+	codeTypeImg := image.NewRGBA(image.Rectangle{image.ZP, image.Pt(width, 100)})
+	draw.Draw(codeTypeImg, codeTypeImg.Bounds(), image.White, image.ZP, draw.Src)
+	c.SetFontSize(14)
+	c.SetClip(codeTypeImg.Bounds())
+	c.SetDst(codeTypeImg)
+	//c.SetSrc(image.NewUniform(color.RGBA{0, 128, 0, 255}))
+
+	// Draw the text.
+	pt := freetype.Pt(0, int(c.PointToFixed(14)>>6))
+	lastPoint, err := c.DrawString("Code : "+strings.ToUpper(*codeType), pt)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	textLength := fixed.Int26_6.Ceil(lastPoint.X)
+
+	return codeTypeImg, textLength, nil
+}
+
 func getOwnerImg() (image.Image, int, error) {
 	ownerImg := image.NewRGBA(image.Rectangle{image.ZP, image.Pt(width, 100)})
 	draw.Draw(ownerImg, ownerImg.Bounds(), image.White, image.ZP, draw.Src)
@@ -172,15 +207,15 @@ func getResizedLogo() (image.Image, error) {
 	logoImgResized := resize.Thumbnail(400, 50, logoImg, resize.NearestNeighbor)
 
 	return logoImgResized, nil
-
 }
 
-func drawCard(logo, barCode, code, owner image.Image, codeLength, ownerLength int) image.Image {
+func drawCard(logo, barCode, code, codeType, owner image.Image, codeLength, codeTypeLength, ownerLength int) image.Image {
 	card := image.NewRGBA(image.Rectangle{image.ZP, image.Pt(width, height)})
 	draw.Draw(card, card.Bounds(), image.White, image.ZP, draw.Src)
 	draw.Draw(card, card.Bounds(), logo, image.Pt((int(logo.Bounds().Dx()-width)/2), -50), draw.Src)
 	draw.Draw(card, card.Bounds(), barCode, image.Pt(int(barCode.Bounds().Dx()-width)/2, -122), draw.Src)
 	draw.Draw(card, card.Bounds(), code, image.Pt(int(codeLength-width)/2, -222), draw.Src)
+	draw.Draw(card, card.Bounds(), codeType, image.Pt(-50, -260), draw.Src)
 	draw.Draw(card, card.Bounds(), owner, image.Pt(-width+ownerLength+50, -260), draw.Src)
 
 	return card
